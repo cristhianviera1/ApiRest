@@ -31,19 +31,4 @@ var server = app.listen(8080, function () {
 })
  
 function initial(){ 
-  /*let personas = [
-    {
-      nombre: "Joe",
-      apellido: "Thomas",
-      Telefono:{
-        numero:"0998710939"
-      }
-    },
-  ]
- 
-  // Init data -> save to MySQL
-  const Persona = db.personas;
-  for (let i = 0; i < personas.length; i++) { 
-    Persona.create(personas[i]);  
-  }*/
 }

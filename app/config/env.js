@@ -1,5 +1,5 @@
 const env = {
-  database: 'test',
+  database: 'ReservasArtisticas',
   username: 'superusuario',
   password: '1234567',
   host: 'localhost',
