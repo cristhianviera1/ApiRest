@@ -23,6 +23,8 @@ db.sequelize = sequelize;
 db.personas = require('../model/persona.model.js')(sequelize, Sequelize);
 db.direcciones = require('../model/direccion.model.js')(sequelize, Sequelize);
 db.telefonos = require('../model/telefono.model.js')(sequelize, Sequelize);
+db.eventos = require('../model/evento.model')(sequelize,Sequelize);
+db.tiposEventos = require('../model/tipoEvento.model')(sequelize,Sequelize);
 
 //Modelos/Relaciones
 db.telefonos.belongsTo(db.personas);
@@ -31,7 +33,10 @@ db.personas.hasMany(db.telefonos);
 db.direcciones.belongsTo(db.personas);
 db.personas.hasOne(db.direcciones);
 
+db.tiposEventos.belongsTo(db.eventos);
+db.eventos.hasOne(db.tiposEventos);
 
-
+db.eventos.belongsTo(db.personas);
+db.personas.hasOne(db.eventos);
 
 module.exports = db;

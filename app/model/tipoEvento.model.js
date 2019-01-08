@@ -4,5 +4,5 @@ module.exports = (sequelize, Sequelize) => {
           type: Sequelize.STRING
       }
 	});	
-	return Telefono;
+	return tipoEvento;
 };
