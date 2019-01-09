@@ -3,20 +3,6 @@ const Persona = db.personas;
 const Telefono = db.telefonos;
 const Direccion = db.direcciones;
 
-// Post a Persona
-exports.create = (req, res) => {	
-	// Save to PostgreSQL database
-	Persona.create({
-				"nombre": req.body.nombre, 
-				"apellido": req.body.apellido				
-			}).then(persona => {		
-			// Send created customer to client
-			res.json(persona);
-		}).catch(err => {
-			console.log(err);
-			res.status(500).json({msg: "error", details: err});
-		});
-};
 //Post a persona with FK
 exports.createFK = (req, res) => {	
 	// Save to PostgreSQL database
