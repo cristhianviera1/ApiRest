@@ -1,5 +1,5 @@
 module.exports = function(app) {
-    const personas = require('../controller/persona.controller.js');
+    const personas = require('../controller/controlador.js');
  
     // Create a new Customer
     app.get('/api/personas', personas.findAll);

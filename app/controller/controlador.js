@@ -3,15 +3,18 @@ const Persona = db.personas;
 const Telefono = db.telefonos;
 const Direccion = db.direcciones;
 
-//Post a persona with FK
 exports.createFK = (req, res) => {	
-	// Save to PostgreSQL database
+
+	// req = solicitud de ingreso
+	// res = respuesta hacía la petición
+
+	// se exporta funciones para ser consumido por las rutas
+
 	Persona.create({
 				"nombre": req.body.nombre, 
 				"apellido": req.body.apellido
 			})
 			.then(persona => {		
-			// Send created customer to client
 			for (i=0;i<req.body.numero.length;i++){
 				Telefono.create({
 					"numero":req.body.numero[i],
@@ -26,7 +29,7 @@ exports.createFK = (req, res) => {
 				"referencia":req.body.referencia,
 				"personaId": persona.id
 			})
-				//res.json(persona);
+
 			}).then(res.json("Guardado Exitósamente"))
 			.catch(err => {
 			console.log(err);
@@ -34,7 +37,7 @@ exports.createFK = (req, res) => {
 	});		
 };
  
-// Traer todas las Personasis
+
 exports.findAll = (req, res) => {
 	Persona.findAll({attributes:['nombre','apellido'],include:[
 		{
@@ -45,7 +48,6 @@ exports.findAll = (req, res) => {
 			attributes:['sector','callePrincipal','calleSecundaria','nLote','referencia']
 		}
 ]}).then(personas => {
-			// Send All Customers to Client
 			res.json(personas.sort(function(c1, c2){return c1.id - c2.id}));
 		}).catch(err => {
 			console.log(err);
@@ -53,11 +55,19 @@ exports.findAll = (req, res) => {
 		});
 };
 
-// Find a Persona by Id
+
+
 exports.findById = (req, res) => {	
-	Persona.findById(req.params.id,
-		{
-			include:[Telefono]
+	Persona.findById(req.params.id,{attributes:['nombre','apellido'],		
+			include:[
+				{
+					model:Telefono,
+					attributes:['numero']
+				},{
+					model: Direccion,
+					attributes:['sector','callePrincipal','calleSecundaria','nLote','referencia']
+				}
+			]
 		}
 		).then(persona => {
 			res.json(persona);
@@ -66,7 +76,9 @@ exports.findById = (req, res) => {
 			res.status(500).json({msg: "error", details: err});
 		});
 }; 
-// Update a Customer
+
+
+	// Actualizar valores de Persona
 exports.update = (req, res) => {
 	const id = req.body.id;
 	Persona.update( req.body, 
@@ -76,17 +88,4 @@ exports.update = (req, res) => {
 				console.log(err);
 				res.status(500).json({msg: "error", details: err});
 			});
-};
-
-// Delete a Customer by Id
-exports.delete = (req, res) => {
-	const id = req.params.id;
-	Persona.destroy({
-			where: { id: id }
-		}).then(() => {
-			res.status(200).json( { msg: 'Deleted Successfully -> Persona Id = ' + id } );
-		}).catch(err => {
-			console.log(err);
-			res.status(500).json({msg: "error", details: err});
-		});
 };

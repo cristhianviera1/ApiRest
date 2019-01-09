@@ -19,7 +19,7 @@ db.sequelize.sync({force: true}).then(() => {
   initial();
 });
  
-require('./app/route/persona.route.js')(app);
+require('./app/route/rutas.js')(app);
  
 // Create a Server
 var server = app.listen(8080, function () {
