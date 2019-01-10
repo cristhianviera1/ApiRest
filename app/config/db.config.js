@@ -33,8 +33,8 @@ db.personas.hasMany(db.telefonos);
 db.direcciones.belongsTo(db.personas);
 db.personas.hasOne(db.direcciones);
 
-db.tiposEventos.belongsTo(db.eventos);
-db.eventos.hasOne(db.tiposEventos);
+db.eventos.belongsTo(db.tiposEventos);
+db.tiposEventos.hasOne(db.eventos);
 
 db.eventos.belongsTo(db.personas);
 db.personas.hasOne(db.eventos);

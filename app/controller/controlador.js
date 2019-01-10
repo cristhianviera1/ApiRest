@@ -2,8 +2,10 @@ const db = require('../config/db.config.js');
 const Persona = db.personas;
 const Telefono = db.telefonos;
 const Direccion = db.direcciones;
+const Evento = db.eventos;
+const tipoEvento = db.tiposEventos;
 
-exports.createFK = (req, res) => {	
+/*exports.createFK = (req, res) => {	
 
 	// req = solicitud de ingreso
 	// res = respuesta hacía la petición
@@ -35,14 +37,22 @@ exports.createFK = (req, res) => {
 			console.log(err);
 			res.status(500).json({msg: "error", details: err});
 	});		
-};
+};*/
  
 
 exports.findAll = (req, res) => {
+	
 	Persona.findAll({attributes:['nombre','apellido'],include:[
 		{
 		model: Telefono,
 		attributes:['numero']
+		},{
+			model: Evento,
+			attributes:['fecha','hora'],
+			include:[{
+				model:tipoEvento,
+				attributes:['nombre'],	
+			}]
 		},{
 			model: Direccion,
 			attributes:['sector','callePrincipal','calleSecundaria','nLote','referencia']
@@ -88,4 +98,52 @@ exports.update = (req, res) => {
 				console.log(err);
 				res.status(500).json({msg: "error", details: err});
 			});
+};
+
+
+
+
+
+exports.creacionEvento = (req, res) => {	
+
+	// req = solicitud de ingreso
+	// res = respuesta hacía la petición
+
+	// se exporta funciones para ser consumido por las rutas
+	console.log(req.body);
+	Persona.create({
+				"nombre": req.body.nombre, 
+				"apellido": req.body.apellido
+			})
+			.then(persona => {		
+			for (i=0;i<req.body.numero.length;i++){
+				Telefono.create({
+					"numero":req.body.numero[i],
+					"personaId": persona.id
+				})					
+			};
+			tipoEvento.create({
+				"nombre": req.body.tipoEvento
+			}).then(tipo =>{
+				Evento.create({
+					"fecha": req.body.fecha,
+					"hora": req.body.hora,
+					"tiposEventoId": tipo.id,
+					"personaId": persona.id
+				})
+			});
+			Direccion.create({
+				"sector": req.body.sector,
+				"callePrincipal": req.body.callePrincipal,
+				"calleSecundaria":req.body.calleSecundaria,
+				"nLote":req.body.nLote,
+				"referencia":req.body.referencia,
+				"personaId": persona.id
+			})
+
+			}).then(res.json("Guardado Exitósamente"))
+			.catch(err => {
+			console.log(err);
+			res.status(500).json({msg: "error", details: err});
+	});		
 };

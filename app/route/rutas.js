@@ -1,11 +1,11 @@
 module.exports = function(app) {
-    const personas = require('../controller/controlador.js');
+    const controlador = require('../controller/controlador.js');
  
     // Create a new Customer
-    app.get('/api/personas', personas.findAll);
-    app.get('/api/personas/:id', personas.findById);
-    app.post('/api/personas/addfk', personas.createFK);
-
+    app.get('/api/personas', controlador.findAll);
+    app.get('/api/personas/:id', controlador.findById);
+    app.post('/api/personas/addfk', controlador.createFK);
+    app.post('/api/personas/add',controlador.creacionEvento)
 /*
     // Create a new Customer
     app.post('/api/customers', customers.create);
